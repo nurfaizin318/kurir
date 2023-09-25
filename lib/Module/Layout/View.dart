@@ -1,10 +1,5 @@
-import 'package:kurir/Module/Chat/View.dart';
-import 'package:kurir/Module/Home/view.dart';
 import 'package:kurir/Module/Layout/viewModel.dart';
-import 'package:kurir/Module/Profile/View.dart';
-import 'package:kurir/Module/Register/view.dart';
 import 'package:kurir/Utils/Color/color.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

@@ -4,8 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:get/get.dart';
-import 'dart:math' as math;
-
 import 'package:kurir/Utils/Style/style.dart';
 
 class LoginPage extends StatelessWidget {
@@ -16,7 +14,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = CustomSize(context).width;
-    double height =  CustomSize(context).height;
+    double height = CustomSize(context).height;
 
     final controller = Get.find<LoginController>();
 
@@ -32,9 +30,8 @@ class LoginPage extends StatelessWidget {
               Container(
                 width: width,
                 height: height,
-              color: themeGreen,
+                color: themeGreen,
               ),
-         
               Container(
                 height: height * 0.75,
                 margin: EdgeInsets.only(top: height * 0.25),
@@ -48,8 +45,7 @@ class LoginPage extends StatelessWidget {
                     // mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                       SizedBox(height: height * 0.15),
-                  
+                      SizedBox(height: height * 0.15),
                       Text(
                         "Selamat Datang",
                         style: TextStyle(
@@ -125,7 +121,6 @@ class LoginPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
-                  
                       Obx(
                         () => controller.isLoginLoading.value
                             ? CircularProgressIndicator()
@@ -138,7 +133,8 @@ class LoginPage extends StatelessWidget {
                                   height: 50.0,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(30.0),
-                                    color: themeGreen, // Warna latar belakang tombol
+                                    color:
+                                        themeGreen, // Warna latar belakang tombol
                                   ),
                                   child: Center(
                                     child: Text(
@@ -154,7 +150,6 @@ class LoginPage extends StatelessWidget {
                                 ),
                               ),
                       ),
-                     
                       TextButton(
                         style: TextButton.styleFrom(
                           textStyle: const TextStyle(fontSize: 15),
@@ -162,7 +157,10 @@ class LoginPage extends StatelessWidget {
                         onPressed: () {
                           Get.toNamed("/resetPassword");
                         },
-                        child:  Text('Lupa Password?',style: DynamicTextStyle.textNormal(color: themeGreen),),
+                        child: Text(
+                          'Lupa Password?',
+                          style: DynamicTextStyle.textNormal(color: themeGreen),
+                        ),
                       ),
                     ],
                   ),
@@ -174,6 +172,4 @@ class LoginPage extends StatelessWidget {
       ),
     );
   }
-
-
 }

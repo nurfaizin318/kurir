@@ -1,4 +1,5 @@
-import 'package:kurir/Module/Chat/ViewModel.dart';
+import 'package:kurir/Module/Detail/viewModel.dart';
+import 'package:kurir/Module/Evidence/viewModel.dart';
 import 'package:kurir/Module/History/viewModel.dart';
 import 'package:kurir/Module/Home/viewModel.dart';
 import 'package:kurir/Module/IntroductionPage/viewModel.dart';
@@ -51,13 +52,6 @@ class LayoutBinding implements Bindings {
   }
 }
 
-class ChatBinding implements Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => ChatController(), fenix: false);
-  }
-}
-
 class IntroductionBinding implements Bindings {
   @override
   void dependencies() {
@@ -76,5 +70,19 @@ class VerifyPasswordBinding implements Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => VerifyPasswordController(), fenix: false);
+  }
+}
+
+class DetailBinding implements Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => DetailController(), fenix: false);
+  }
+}
+
+class EvidenceBinding implements Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => EvidenceController(), fenix: false);
   }
 }

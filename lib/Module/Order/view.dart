@@ -1,19 +1,12 @@
-import 'dart:typed_data';
-
-import 'package:kurir/Utils/Extention/Google_Maps/maps.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:kurir/Module/Order/viewModel.dart';
 import 'package:kurir/Utils/Color/color.dart';
 import 'package:kurir/Utils/Style/style.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'dart:async';
 
 class OrderPage extends StatelessWidget {
   OrderPage({Key? key}) : super(key: key);
-
-  static Completer<GoogleMapController> _controller = Completer();
 
   final controller = Get.find<OrderController>();
 
@@ -23,221 +16,295 @@ class OrderPage extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: [
-          Column(children: [
-            Container(
-              height: height,
-              width: width,
-              child: Obx(
-                () => GoogleMap(
-                  polylines: controller.isPolyline.value
-                      ? Set<Polyline>.of(controller.polylines.values)
-                      : Set<Polyline>.of(controller.polylines.values),
-                  trafficEnabled: false,
-                  myLocationEnabled: true,
-                  mapType: MapType.normal,
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(
-                        controller.startLat.value, controller.startLng.value),
-                    zoom: 18,
-                  ),
-                markers:  Set<Marker>.of(controller.markers),
-                  onMapCreated: controller.onMapCreated,
-                ),
-              ),
-            ),
-          ]),
-          Positioned(
-            bottom: 0,
-            child: Column(children: [
-              Obx(
-                () => Column(
-                  children: [
-                    SizedBox(
-                      height: 30,
-                      child: Center(
-                          child: ElevatedButton(
-                        child: controller.panelDisableStatus.value
-                            ? Icon(Icons.arrow_upward_rounded)
-                            : Icon(Icons.arrow_downward_rounded),
-                        onPressed: () {
-                          controller.handlePanelStatus();
-                        },
-                      )),
+        resizeToAvoidBottomInset: false,
+        body: Obx(
+          () => Stack(
+            children: [
+              Column(children: [
+                Container(
+                  height: height,
+                  width: width,
+                  child: GoogleMap(
+                    polylines: Set<Polyline>.of(controller.polylinest.value),
+                    trafficEnabled: false,
+                    myLocationEnabled: true,
+                    mapType: MapType.normal,
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(
+                          controller.startLat.value, controller.startLng.value),
+                      zoom: 18,
                     ),
-                    Container(
-                      padding: EdgeInsets.all(20),
-                      width: width,
-                      height: controller.panelDisableStatus.value
-                          ? 0
-                          : height * 0.5,
-                      color: grey50,
-                      child: Column(children: [
-                        SizedBox(
-                          height: 30,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              if (controller.selectedDest.value?.distance !=
-                                  null)
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.route,
-                                      size: 30,
-                                      color: grey600,
-                                    ),
-                                    Text(
-                                      '${controller.selectedDest.value?.distance}',
-                                      style: DynamicTextStyle.textBold(
-                                          color: grey700),
-                                    ),
-                                  ],
-                                ),
-                              if (controller.selectedDest.value?.amount != null)
-                                Text(
-                                  'Rp ${controller.selectedDest.value?.amount}',
-                                  style:
-                                      DynamicTextStyle.textBold(color: grey700),
-                                )
-                            ],
-                          ),
+                    markers: Set<Marker>.of(controller.markers),
+                    onMapCreated: controller.onMapCreated,
+                  ),
+                ),
+              ]),
+              Positioned(
+                bottom: 0,
+                child: Container(
+                  padding: EdgeInsets.all(20),
+                  width: width,
+                  height: 200,
+                  color: themeWhite,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Bogor",
+                        style: DynamicTextStyle.textBold(
+                            fontSize: 16, color: grey900),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      SizedBox(
+                        height: 60,
+                        child: Text(
+                          "Jl.merdeka papua tengah komplek UUID, pasir Mulya <bogor Barat, Kota Bogor",
+                          style: DynamicTextStyle.textNormal(
+                              fontSize: 16, color: grey800),
                         ),
-                        Container(
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Get.toNamed("/evidence");
+                        },
+                        child: Container(
+                          margin:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          width: width,
+                          height: 50.0,
                           child: InkWell(
-                            onTap: () {
-                              controller.PopUpDestination();
-                            },
-                            child: TextFormField(
-                              style: TextStyle(fontSize: 16, color: grey800),
-                              controller: controller.destinationAddress,
-                              enabled: false,
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(30),
-                                  isDense: true,
-                                  counterText: "",
-                                  hintText: "Pilih Tujuan",
-                                  hintStyle: TextStyle(color: grey700),
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  prefixIcon: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.location_on,
-                                      color: red1000,
-                                      size: 30,
-                                    ),
-                                  ),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: BorderSide.none)),
-                              textAlign: TextAlign.start,
-                              maxLines: 1,
-                              maxLength: 20,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          child: TextFormField(
-                            style: TextStyle(fontSize: 16, color: grey800),
-                            controller: controller.currentAddress,
-                            enabled: false,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                                contentPadding: EdgeInsets.all(30),
-                                isDense: true,
-                                counterText: "",
-                                filled: true,
-                                fillColor: Colors.white,
-                                prefixIcon: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.location_history,
-                                    color: blue1000,
-                                    size: 30,
+                            onTap: () {},
+                            child: Container(
+                              width: 300.0,
+                              height: 50.0,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30.0),
+                                color:
+                                    themeGreen, // Warna latar belakang tombol
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Selesai',
+                                  style: TextStyle(
+                                    color: Colors.white, // Warna teks tombol
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide.none)),
-                            textAlign: TextAlign.start,
-                            maxLines: 1,
-                            maxLength: 20,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        SizedBox(
-                          height: 50,
-                          width: 380,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              controller.handleOrder();
-                            },
-                            child: Text('Pesan Sekarang'),
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(12), // <-- Radius
                               ),
                             ),
                           ),
-                        )
-                      ]),
-                    ),
-                  ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 20,
+                top: 70,
+                child: InkWell(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: Container(
+                    width: 70,
+                    height: 30,
+                    decoration:
+                        RoundedFixBox.getDecoration(color: Colors.white),
+                    child: Icon(Icons.arrow_back),
+                  ),
                 ),
               )
-            ]),
+            ],
           ),
-          Obx(()=> controller.isFindDriver.value ? Positioned(
-              child: Container(
-                height: height,
-                width: width,
-                color: Color.fromRGBO(0, 0, 0, 0.2),
-                child: Center(
-                          child: Container(
-                           decoration: RoundedFixBox.getDecoration(color: Colors.white,radius: 30),
-                width: 300,
-                height: 300,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/images/find_anim.gif",
-                        width: 200,
+        ));
+  }
+
+  Positioned OrderPanel(BuildContext context, double width) {
+    return Positioned(
+      bottom: 0,
+      child: Container(
+        color: themeWhite,
+        // padding: EdgeInsets.all(10),
+        height: 400,
+        width: CustomSize(context).width,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 8,
+            ),
+            Container(
+              width: 50,
+              height: 5,
+              decoration:
+                  RoundedFixBox.getDecoration(radius: 4, color: grey200),
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Container(
+              color: blue50,
+              width: width,
+              child: Row(children: [
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    height: 60,
+                    // color: red500,
+                    child: Center(
+                      child: Image.asset("assets/images/motorcycle.png"),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    padding: EdgeInsets.all(15),
+                    height: 60,
+                    // color: red200,
+                    child: Text(
+                      "Billjek",
+                      style: DynamicTextStyle.textBold(color: grey800),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    alignment: Alignment.topRight,
+                    padding: EdgeInsets.all(15),
+                    height: 60,
+                    // color: red600,
+                    child: Text(
+                      "Rp 11.000",
+                      style: DynamicTextStyle.textBold(color: grey800),
+                    ),
+                  ),
+                )
+              ]),
+            ),
+            Container(
+              height: 50,
+              width: CustomSize(context).width,
+              color: themeWhite,
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      height: 60,
+                      // color: red500,
+                      child: Center(
+                        child: Image.asset("assets/images/ic_money.png"),
                       ),
-                      Text(
-                        "Mencari Driver untuk Anda...",
-                        style: DynamicTextStyle.textNormal(color: blue400),
-                      )
-                    ]),
-                          ),
-                        ),
-              )):SizedBox()),
-          Positioned(
-            left: 20,
-            top: 70,
-            child: InkWell(
-              onTap: () {
-                Get.back();
-              },
-              child: Container(
-                width: 70,
-                height: 30,
-                decoration: RoundedFixBox.getDecoration(color: Colors.white),
-                child: Icon(Icons.arrow_back),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Container(
+                      padding: EdgeInsets.all(15),
+                      height: 60,
+                      child: Text("Metode Pembayaran"),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      alignment: Alignment.topRight,
+                      padding: EdgeInsets.all(15),
+                      height: 60,
+                      // color: red600,
+                      child: Text(
+                        "Cash",
+                        style: DynamicTextStyle.textBold(color: grey800),
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
-          ),
-        ],
+            Obx(
+              () => Container(
+                height: 240,
+                width: width,
+                //  color: blue600,
+                child:
+                    Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    width: width,
+                    // color:blue100,
+
+                    child: Row(
+                      children: [
+                        Icon(Icons.location_on),
+                        Flexible(
+                          child: Text(
+                            controller.currentAddress.value,
+                            style: DynamicTextStyle.textBold(
+                                color: grey700, fontSize: 14),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    width: width,
+                    //  height: 50,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.location_on,
+                          color: red800,
+                        ),
+                        Flexible(
+                          child: Text(
+                            controller.destinationAdress.value,
+                            style: DynamicTextStyle.textBold(
+                                color: grey700, fontSize: 14),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      width: width,
+                      height: 50.0,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(color: blue500, width: 2),
+                        color: themeWhite, // Warna latar belakang tombol
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Batal',
+                          style: TextStyle(
+                            color: blue700, // Warna teks tombol
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ]),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

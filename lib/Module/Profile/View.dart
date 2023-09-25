@@ -21,189 +21,180 @@ class ProfilePage extends StatelessWidget {
         onTap: () {
           FocusScope.of(context).requestFocus(new FocusNode());
         },
-        child: SingleChildScrollView(
-          child: Stack(
-            children: [
-          
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.only(topLeft: Radius.circular(60)),
-                    color: Colors.white),
-                margin: EdgeInsets.only(top: 160),
-                height: CustomSize(context).height,
-                width: CustomSize(context).width,
-                child: Column(children: [
-                  Container(
-                    width: CustomSize(context).width,
-                    height: 160,
-                    // color: Colors.red,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 35),
-                      child: Row(children: [
-                        const SizedBox(
-                          height: 80,
-                          width: 80,
-                          child: CircleAvatar(
-                            backgroundImage:
-                                NetworkImage("https://picsum.photos/500/300"),
-                            maxRadius: 15,
-                            minRadius: 15,
-                          ),
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20)),
+                  color: Colors.white),
+              margin: EdgeInsets.only(top: CustomSize(context).height * 0.2),
+              height: CustomSize(context).height * 0.8,
+              width: CustomSize(context).width,
+              child: Column(children: [
+                Container(
+                  width: CustomSize(context).width,
+                  height: 160,
+                  // color: Colors.red,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 35),
+                    child: Row(children: [
+                      const SizedBox(
+                        height: 80,
+                        width: 80,
+                        child: CircleAvatar(
+                          backgroundImage:
+                              NetworkImage("https://picsum.photos/500/300"),
+                          maxRadius: 15,
+                          minRadius: 15,
                         ),
-                        Container(
-                          height: 100,
-                          // color: Colors.red,
-                          padding: EdgeInsets.all(20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                textAlign: TextAlign.start,
-                                "Nama Kurir",
-                                style: TextStyle(
-                                    fontSize: 23, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                textAlign: TextAlign.left,
-                              "total item",
-                                style: TextStyle(
-                                  fontSize: 13,
-                                ),
-                              )
-                            ],
-                          ),
-                        )
-                      ]),
-                    ),
-                  ),
-                  Divider(
-                    thickness: 1,
-                  ),
-                  Container(
-                    width: CustomSize(context).width,
-                    padding: EdgeInsets.all(20),
-
-                    // color: Colors.grey,
-                    child: Column(
-                      children: [
-                        Row(
+                      ),
+                      Container(
+                        height: 100,
+                        // color: Colors.red,
+                        padding: EdgeInsets.all(20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(
-                              Icons.email_outlined,
-                              color: Colors.grey,
+                            Text(
+                              textAlign: TextAlign.start,
+                              "Nama Kurir",
+                              style: TextStyle(
+                                  fontSize: 23, fontWeight: FontWeight.bold),
                             ),
-                            SizedBox(width: 10),
-                            Text("email@gmail.com",
-                                style: TextStyle(color: Colors.grey))
+                            SizedBox(
+                              height: 5,
+                            ),
                           ],
                         ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Row(
+                      )
+                    ]),
+                  ),
+                ),
+                Divider(
+                  thickness: 1,
+                ),
+                Container(
+                  width: CustomSize(context).width,
+                  padding: EdgeInsets.all(20),
+
+                  // color: Colors.grey,
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.email_outlined,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(width: 10),
+                          Text("email@gmail.com",
+                              style: TextStyle(color: Colors.grey))
+                        ],
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.call_outlined,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            "08756474747",
+                            style: TextStyle(color: Colors.grey),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const Divider(
+                  thickness: 1,
+                ),
+                Container(
+                  width: CustomSize(context).width,
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 10,
+                      ),
+                      const Text("Saldo kurir"),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Rp. 180.000",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 32,
+                            color: Colors.grey[700]),
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Divider(
+                  thickness: 1,
+                ),
+                Column(
+                  children: [
+                    InkWell(
+                      splashColor: Colors.white30,
+                      onTap: () {},
+                      child: const Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                        child: Row(
                           children: [
                             Icon(
-                              Icons.call_outlined,
+                              Icons.person_outline_outlined,
                               color: Colors.grey,
                             ),
                             SizedBox(width: 10),
                             Text(
-                              "08756474747",
+                              "Pusat Bantuan",
                               style: TextStyle(color: Colors.grey),
                             )
                           ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                  const Divider(
-                    thickness: 1,
-                  ),
-                  Container(
-                    width: CustomSize(context).width,
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        const Text("Saldo kurir"),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Rp. 180.000",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 32,
-                              color: Colors.grey[700]),
-                        )
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Divider(
-                    thickness: 1,
-                  ),
-                  Column(
-                    children: [
-                      InkWell(
-                        splashColor: Colors.white30,
-                        onTap: () {},
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 20),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.person_outline_outlined,
-                                color: Colors.grey,
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                "Pusat Bantuan",
-                                style: TextStyle(color: Colors.grey),
-                              )
-                            ],
-                          ),
+                    InkWell(
+                      splashColor: Colors.white30,
+                      onTap: () {
+                        controller.logOut();
+                      },
+                      child: const Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.logout_outlined,
+                              color: Colors.red,
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              "Log Out",
+                              style: TextStyle(color: Colors.red),
+                            )
+                          ],
                         ),
                       ),
-                      InkWell(
-                        splashColor: Colors.white30,
-                        onTap: () {
-                          controller.logOut();
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 20),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.logout_outlined,
-                                color: Colors.red,
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                "Log Out",
-                                style: TextStyle(color: Colors.red),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ]),
-              )
-            ],
-          ),
+                    ),
+                  ],
+                ),
+              ]),
+            )
+          ],
         ),
       ),
     );

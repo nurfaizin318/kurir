@@ -42,7 +42,7 @@ class RoundedBoxWithShadow {
       color: color,
       boxShadow: [
         BoxShadow(
-          color: Colors.grey, // Warna shadow
+          color: Color.fromRGBO(0, 0, 0, 0.7), // Warna shadow
           offset: Offset(0, 1), // Posisi shadow
           blurRadius: elevation, // Jarak blur (smoothness)
         ),

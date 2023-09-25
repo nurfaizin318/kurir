@@ -1,5 +1,6 @@
 import 'package:kurir/Binding/binding.dart';
-import 'package:kurir/Module/Chat/View.dart';
+import 'package:kurir/Module/Detail/view.dart';
+import 'package:kurir/Module/Evidence/view.dart';
 import 'package:kurir/Module/History/view.dart';
 import 'package:kurir/Module/Home/view.dart';
 import 'package:kurir/Module/IntroductionPage/view.dart';
@@ -30,8 +31,6 @@ class Routes {
     ),
     GetPage(name: "/profile", page: () => ProfilePage()),
     GetPage(
-        name: "/chat", page: () => const ChatPage(), binding: ChatBinding()),
-    GetPage(
         name: "/introduction",
         page: () => const IntroductionPage(),
         binding: IntroductionBinding()),
@@ -45,5 +44,8 @@ class Routes {
         name: "/verifyPassword",
         page: () => VerifyPasswordPage(),
         binding: VerifyPasswordBinding()),
+    GetPage(name: "/detail", page: () => Detail(), binding: DetailBinding()),
+    GetPage(
+        name: "/evidence", page: () => Evidence(), binding: EvidenceBinding()),
   ];
 }
