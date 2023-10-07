@@ -8,9 +8,9 @@ import 'package:kurir/Utils/Color/color.dart';
 import 'package:kurir/Utils/Extention/Google_Maps/maps.dart';
 import '../../Utils/Extention/Permision/Location_Permision/permision.dart';
 
-class OrderController extends GetxController {
+class MapsController extends GetxController {
   PolylinePoints polylinePoints = PolylinePoints();
-  // Map<PolylineId, Polyline> polylines = {};
+
   final polylinest = <Polyline>{}.obs;
   late GoogleMapController mapsController;
   final context = Get.context!;
@@ -37,90 +37,59 @@ class OrderController extends GetxController {
   @override
   void onInit() async {
     // TODO: implement onInit
+    var route = Get.arguments;
 
     MapsHelper.getBytesFromAsset('assets/images/motorcycle.png', 90)
         .then((onValue) {
       customIcon = BitmapDescriptor.fromBytes(onValue);
     });
 
-    PermissionToUser.permissionForLocation().then((value) async {
-      position = await PermissionToUser.determinePosition();
-      if (position?.latitude != null && position?.longitude != null) {
-        startLat.value = position!.latitude;
-        startLng.value = position!.longitude;
+    position = await PermissionToUser.determinePosition();
+    if (position?.latitude != null && position?.longitude != null) {
+      startLat.value = position!.latitude;
+      startLng.value = position!.longitude;
 
-        mapsController.moveCamera(CameraUpdate.newLatLngZoom(
-            LatLng(position!.latitude, position!.longitude), 19));
+      mapsController.moveCamera(CameraUpdate.newLatLngZoom(
+          LatLng(position!.latitude, position!.longitude), 19));
+    }
+    double zoom = 19;
+
+    for (int i = 0; i < route.length - 1; i++) {
+      print(zoom);
+      if (i % 7 == 0) {
+        mapsController.animateCamera(CameraUpdate.newLatLngZoom(
+            LatLng(route[i].latitude, route[i].longitude), zoom));
       }
-    });
+      if (i % 17 == 0) {
+        zoom = zoom - 1;
+      }
+      await Future.delayed(Duration(milliseconds: 70));
+      polylineCoordinates.add(LatLng(route[i].latitude, route[i].longitude));
+
+      PolylineId id = PolylineId("poly");
+      Polyline poli = Polyline(
+          polylineId: id,
+          color: blue800,
+          points: polylineCoordinates,
+          width: 9,
+          endCap: Cap.buttCap);
+      polylinest.add(poli);
+    }
+
+    markers.add(Marker(
+      markerId: MarkerId('dest'),
+      position: LatLng(
+        polylineCoordinates.last.latitude,
+        polylineCoordinates.last.longitude,
+      ),
+    ));
 
     super.onInit();
   }
 
   @override
   void onReady() async {
-    // setupPolyline(PointLatLng(destination.latitude, destination.longitude));
     super.onReady();
-  }
-
-  Future<PolylineResult> setupPolyline(PointLatLng destination) async {
-    polylineCoordinates.clear();
-
-    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      "AIzaSyBTS-qAl0ryqDGIF9DGZ3OhXHxvuXbYRrU",
-      PointLatLng(startLat.value, startLng.value),
-      destination,
-      travelMode: TravelMode.driving,
-    );
-    var median = (result.points.length / 2).ceil();
-    var medianLat = result.points[median].latitude;
-    var medianLng = result.points[median].longitude;
-
-    double zoomRadius = 0;
-    String distance =
-        result.distance != null ? result.distance!.split(' ')[0] : "";
-    double distanceToInt = double.tryParse(distance) ?? 0;
-// Konversi string angka menjadi integer
-    if (distanceToInt < 5) {
-      zoomRadius = 14;
-    } else if (distanceToInt > 5 && distanceToInt <= 10) {
-      zoomRadius = 14;
-    } else if (distanceToInt > 10 && distanceToInt <= 20) {
-      zoomRadius = 12.3;
-    } else if (distanceToInt > 20 && distanceToInt < 50) {
-      zoomRadius = 11;
-    } else {
-      zoomRadius = 10;
-    }
-
-    mapsController.moveCamera(
-        CameraUpdate.newLatLngZoom(LatLng(medianLat, medianLng), zoomRadius));
-    if (result.points.isNotEmpty) {
-      for (int i = 0; i < result.points.length - 1; i++) {
-        Future.delayed(Duration(milliseconds: 100));
-        List<LatLng> segment = [
-          LatLng(result.points[i].latitude, result.points[i].longitude),
-          LatLng(result.points[i + 1].latitude, result.points[i + 1].longitude),
-        ];
-        // await Future.delayed(
-        //     Duration(milliseconds: 100)); // Delay for smooth animation
-        print('segment ${i} ${segment}');
-        polylineCoordinates
-            .add(LatLng(result.points[i].latitude, result.points[i].longitude));
-      }
-
-      PolylineId id = PolylineId("poly");
-      Polyline polyline = Polyline(
-          polylineId: id,
-          color: blue800,
-          points: polylineCoordinates,
-          width: 9,
-          startCap: Cap.roundCap,
-          endCap: Cap.roundCap);
-    } else {
-      print(result.errorMessage);
-    }
-    return result;
   }
 
   void onMapCreated(GoogleMapController controller) {
@@ -130,12 +99,11 @@ class OrderController extends GetxController {
   Future<void> moveMapCamera(double lat, double lng) async {
     CameraPosition nepPos = CameraPosition(
       target: LatLng(lat, lng),
-      zoom: 15,
+      zoom: 20,
     );
 
     mapsController.animateCamera(CameraUpdate.newCameraPosition(nepPos));
   }
-
 
   void animateDriverMovement(
       List<PointLatLng> route, LatLng driver, String callBackStatus) async {
@@ -170,6 +138,5 @@ class OrderController extends GetxController {
 
       await Future.delayed(Duration(milliseconds: durationInMilliseconds));
     }
-    setupPolyline(PointLatLng(destination.latitude, destination.longitude));
   }
 }

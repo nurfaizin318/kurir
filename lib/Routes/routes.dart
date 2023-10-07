@@ -6,7 +6,7 @@ import 'package:kurir/Module/Home/view.dart';
 import 'package:kurir/Module/IntroductionPage/view.dart';
 import 'package:kurir/Module/Layout/View.dart';
 import 'package:kurir/Module/Login/view.dart';
-import 'package:kurir/Module/Order/view.dart';
+import 'package:kurir/Module/Maps/view.dart';
 import 'package:kurir/Module/Profile/View.dart';
 import 'package:kurir/Module/Register/view.dart';
 import 'package:kurir/Module/ResetPassword/view.dart';
@@ -35,7 +35,7 @@ class Routes {
         page: () => const IntroductionPage(),
         binding: IntroductionBinding()),
     GetPage(name: "/history", page: () => HistoryPage()),
-    GetPage(name: "/order", page: () => OrderPage()),
+    GetPage(name: "/order", page: () => MapsPage()),
     GetPage(
         name: "/resetPassword",
         page: () => ResetPasswordPage(),

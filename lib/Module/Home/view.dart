@@ -23,55 +23,64 @@ class HomePage extends StatelessWidget {
         titleTextStyle: DynamicTextStyle.textBold(
             fontWeight: FontWeight.w400, color: grey900),
       ),
-      body: Container(
-          padding: EdgeInsets.all(5),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
+      body: Obx(
+        () => controller.isLoadNews.value
+            ? Container(
+                height: height,
                 width: width,
-                child:
-                    // Extracting data from snapshot object
-                    ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: controller.data.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        Get.toNamed("/detail");
-                      },
-                      child: Container(
-                        margin: EdgeInsets.all(5),
-                        width: width,
-                        decoration: RoundedBoxWithShadow.getDecoration(
-                            color: themeWhite, elevation: 1),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            RowDate(),
-                            RowProgress(),
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.only(left: 10, top: 5),
-                              height: 25,
-                              // color: themeGreen,
-                              child: Text("Harus Segera Dikirim",
-                                  style: DynamicTextStyle.textNormal(
-                                      fontSize: 13, color: grey900)),
+                color: Color.fromRGBO(225, 225, 225, 0.5),
+                child: Center(child: CircularProgressIndicator()))
+            : Container(
+                padding: EdgeInsets.all(5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: width,
+                      child:
+                          // Extracting data from snapshot object
+                          ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: controller.data.length,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () {
+                              Get.toNamed("/detail");
+                            },
+                            child: Container(
+                              margin: EdgeInsets.all(5),
+                              width: width,
+                              decoration: RoundedBoxWithShadow.getDecoration(
+                                  color: themeWhite, elevation: 1),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  RowDate(),
+                                  RowProgress(),
+                                  Container(
+                                    width: double.infinity,
+                                    padding: EdgeInsets.only(left: 10, top: 5),
+                                    height: 25,
+                                    // color: themeGreen,
+                                    child: Text("Harus Segera Dikirim",
+                                        style: DynamicTextStyle.textNormal(
+                                            fontSize: 13, color: grey900)),
+                                  ),
+                                  RowDetail(),
+                                ],
+                              ),
                             ),
-                            RowDetail(),
-                          ],
-                        ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
-              )
+                    )
 
-              // Future that needs to be resolved
-              // inorder to display something on the Canvas
-            ],
-          )),
+                    // Future that needs to be resolved
+                    // inorder to display something on the Canvas
+                  ],
+                ),
+              ),
+      ),
     );
   }
 

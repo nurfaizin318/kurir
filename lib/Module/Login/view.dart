@@ -126,7 +126,7 @@ class LoginPage extends StatelessWidget {
                             ? CircularProgressIndicator()
                             : InkWell(
                                 onTap: () {
-                                  Get.toNamed("/layout");
+                              controller.handleLogin();
                                 },
                                 child: Container(
                                   width: 200.0,

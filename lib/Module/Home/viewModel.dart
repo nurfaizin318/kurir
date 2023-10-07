@@ -33,52 +33,15 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     // TODO: implement onInit
-    // fetchList();
+    fetchList();
     super.onInit();
   }
 
   void fetchList() async {
-    try {
-      var response = await UserRepositoryImpl.instance.refreshToken();
-      var token = response.data["original"]["access_token"];
-      storage.clearToken();
-      storage.save(StorageKey.Token.value, token);
-
-      print('new token = ${storage.get(StorageKey.Token.value)}');
-    } finally {
-      getBalance();
-      getPromo();
-    }
-  }
-
-  Future<void> getPromo() async {
     isLoadNews.value = true;
-    try {
-      final baseResponse = await HomeRepositoryImpl.instance.getPromo();
-      List<NewsModel> data = (baseResponse.data as List)
-          .map((item) => NewsModel.fromJson(item))
-          .toList();
-      news.value = data;
+    await Future.delayed(Duration(seconds: 2), () {
       isLoadNews.value = false;
-    } catch (error) {
-      isLoadNews.value = false;
-      throw Exception('failed fetch promo $error');
-    }
-  }
-
-  Future<void> getBalance() async {
-    isLoadBalance.value = true;
-    try {
-      final baseResponse = await HomeRepositoryImpl.instance.getBalance();
-
-      BalanceModel balanceModel = BalanceModel.fromJson(baseResponse.data);
-      // List<dynamic> dataToList = baseResponse.data.values.toList();
-      balance.value = balanceModel;
-      isLoadBalance.value = false;
-    } catch (error) {
-      isLoadBalance.value = false;
-      throw Exception('failed fetch balace $error');
-    }
+    });
   }
 
   @override

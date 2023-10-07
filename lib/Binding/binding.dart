@@ -5,7 +5,7 @@ import 'package:kurir/Module/Home/viewModel.dart';
 import 'package:kurir/Module/IntroductionPage/viewModel.dart';
 import 'package:kurir/Module/Layout/viewModel.dart';
 import 'package:kurir/Module/Login/viewModel.dart';
-import 'package:kurir/Module/Order/viewModel.dart';
+import 'package:kurir/Module/Maps/viewModel.dart';
 import 'package:kurir/Module/Profile/ViewModel.dart';
 import 'package:kurir/Module/Register/viewModel.dart';
 import 'package:kurir/Module/ResetPassword/viewModel.dart';
@@ -46,8 +46,8 @@ class LayoutBinding implements Bindings {
   void dependencies() {
     Get.lazyPut(() => LayoutController(), fenix: true);
     Get.lazyPut(() => HomeController(), fenix: true);
-    Get.lazyPut(() => HistoryController(), fenix: true);
-    Get.lazyPut(() => OrderController(), fenix: true);
+    Get.lazyPut(() => HistoryController(), fenix: false);
+    Get.lazyPut(() =>  MapsController(), fenix: false);
     Get.lazyPut(() => ProfileController(), fenix: true);
   }
 }

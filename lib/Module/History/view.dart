@@ -34,7 +34,7 @@ class HistoryPage extends StatelessWidget {
                     // Extracting data from snapshot object
                     ListView.builder(
                   shrinkWrap: true,
-                  itemCount: controller.data.length,
+                  itemCount: 1,
                   itemBuilder: (context, index) {
                     return Container(
                       margin: EdgeInsets.all(5),

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:kurir/Module/Order/viewModel.dart';
+import 'package:kurir/Module/Maps/viewModel.dart';
 import 'package:kurir/Utils/Color/color.dart';
 import 'package:kurir/Utils/Style/style.dart';
 
-class OrderPage extends StatelessWidget {
-  OrderPage({Key? key}) : super(key: key);
+class MapsPage extends StatelessWidget {
+  MapsPage({Key? key}) : super(key: key);
 
-  final controller = Get.find<OrderController>();
+  final controller = Get.find<MapsController>();
 
   @override
   Widget build(BuildContext context) {
@@ -65,33 +65,30 @@ class OrderPage extends StatelessWidget {
                               fontSize: 16, color: grey800),
                         ),
                       ),
-                      InkWell(
-                        onTap: () {
-                          Get.toNamed("/evidence");
-                        },
-                        child: Container(
-                          margin:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                          width: width,
-                          height: 50.0,
-                          child: InkWell(
-                            onTap: () {},
-                            child: Container(
-                              width: 300.0,
-                              height: 50.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30.0),
-                                color:
-                                    themeGreen, // Warna latar belakang tombol
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Selesai',
-                                  style: TextStyle(
-                                    color: Colors.white, // Warna teks tombol
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                      Container(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        width: width,
+                        height: 50.0,
+                        child: InkWell(
+                          onTap: () {
+                             Get.toNamed("/evidence");
+                          },
+                          child: Container(
+                            width: 300.0,
+                            height: 50.0,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30.0),
+                              color:
+                                  themeGreen, // Warna latar belakang tombol
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Selesai',
+                                style: TextStyle(
+                                  color: Colors.white, // Warna teks tombol
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),

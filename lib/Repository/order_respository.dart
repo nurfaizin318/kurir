@@ -1,4 +1,4 @@
-import 'package:kurir/Module/Order/model/find_place.dart';
+import 'package:kurir/Module/Maps/model/find_place.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import '../Service/dio_service.dart';

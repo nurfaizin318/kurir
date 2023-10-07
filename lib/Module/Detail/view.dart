@@ -33,7 +33,13 @@ class Detail extends StatelessWidget {
               fontWeight: FontWeight.w400, color: grey900),
         ),
         body: SingleChildScrollView(
-          child: Container(
+          child: 
+          controller.isGetPolyline.value? Container(
+            height: height,
+            width: width,
+            color: Color.fromRGBO(0, 0, 0, 0.3),
+            child: Center(child: CircularProgressIndicator(),),) :
+          Container(
             padding: EdgeInsets.all(10),
             height: height,
             width: width,
@@ -154,7 +160,8 @@ class Detail extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    Get.toNamed("/order");
+                    // Get.toNamed("/order");
+                    controller.findPlace();
                   },
                   child: Container(
                     width: 300.0,
