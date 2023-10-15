@@ -45,7 +45,8 @@ class LoginPage extends StatelessWidget {
                     // mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: height * 0.15),
+                      Image.asset("assets/images/Fast_Courier_Logo.png",width: 200,),
+                      // SizedBox(height: height * 0.),
                       Text(
                         "Selamat Datang",
                         style: TextStyle(

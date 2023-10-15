@@ -17,6 +17,7 @@ class SplashScreen extends StatelessWidget {
       width: size.width,
       height: size.height,
       color: themeGreen,
+      child: Center(child: Image.asset("assets/images/Fast_Courier_Logo.png",width: 200,),),
       ),
     );
   }
