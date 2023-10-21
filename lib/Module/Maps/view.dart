@@ -50,7 +50,7 @@ class MapsPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Bogor",
+                        "Tujuan",
                         style: DynamicTextStyle.textBold(
                             fontSize: 16, color: grey900),
                       ),
@@ -60,9 +60,9 @@ class MapsPage extends StatelessWidget {
                       SizedBox(
                         height: 60,
                         child: Text(
-                          "Jl.merdeka papua tengah komplek UUID, pasir Mulya <bogor Barat, Kota Bogor",
+                          controller.address.value,
                           style: DynamicTextStyle.textNormal(
-                              fontSize: 16, color: grey800),
+                              fontSize: 14, color: grey800),
                         ),
                       ),
                       Container(
@@ -72,7 +72,8 @@ class MapsPage extends StatelessWidget {
                         height: 50.0,
                         child: InkWell(
                           onTap: () {
-                             Get.toNamed("/evidence");
+                            //  Get.toNamed("/evidence");
+                            controller.packagehasDone();
                           },
                           child: Container(
                             width: 300.0,

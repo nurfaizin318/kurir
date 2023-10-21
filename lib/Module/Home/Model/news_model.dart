@@ -43,3 +43,48 @@ class NewsModel {
         "status_berita": statusBerita,
       };
 }
+
+
+PackageModel packageModelFromJson(String str) => PackageModel.fromJson(json.decode(str));
+
+String packageModelToJson(PackageModel data) => json.encode(data.toJson());
+
+class PackageModel {
+    String id;
+    String namaPemesan;
+    String tanggalPesanan;
+    String kodePesanan;
+    String alamatPengiriman;
+    String lat;
+    String long;
+
+    PackageModel({
+        required this.id,
+        required this.namaPemesan,
+        required this.tanggalPesanan,
+        required this.kodePesanan,
+        required this.alamatPengiriman,
+        required this.lat,
+        required this.long,
+    });
+
+    factory PackageModel.fromJson(Map<String, dynamic> json) => PackageModel(
+        id: json["id"],
+        namaPemesan: json["nama_pemesan"],
+        tanggalPesanan: json["tanggal_pesanan"],
+        kodePesanan: json["kode_pesanan"],
+        alamatPengiriman: json["alamat_pengiriman"],
+        lat: json["lat"],
+        long: json["long"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "nama_pemesan": namaPemesan,
+        "tanggal_pesanan": tanggalPesanan,
+        "kode_pesanan": kodePesanan,
+        "alamat_pengiriman": alamatPengiriman,
+        "lat": lat,
+        "long": long,
+    };
+}

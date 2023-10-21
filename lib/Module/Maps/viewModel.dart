@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:kurir/Utils/Color/color.dart';
 import 'package:kurir/Utils/Extention/Google_Maps/maps.dart';
+import 'package:kurir/Utils/Style/style.dart';
 import '../../Utils/Extention/Permision/Location_Permision/permision.dart';
 
 class MapsController extends GetxController {
@@ -14,6 +15,7 @@ class MapsController extends GetxController {
   final polylinest = <Polyline>{}.obs;
   late GoogleMapController mapsController;
   final context = Get.context!;
+  var address = "".obs;
 
   final startLat = 0.0.obs;
   final startLng = 0.0.obs;
@@ -37,8 +39,8 @@ class MapsController extends GetxController {
   @override
   void onInit() async {
     // TODO: implement onInit
-    var route = Get.arguments;
-
+    var route = Get.arguments[0];
+    address.value = Get.arguments[1];
     MapsHelper.getBytesFromAsset('assets/images/motorcycle.png', 90)
         .then((onValue) {
       customIcon = BitmapDescriptor.fromBytes(onValue);
@@ -49,21 +51,19 @@ class MapsController extends GetxController {
       startLat.value = position!.latitude;
       startLng.value = position!.longitude;
 
-      mapsController.moveCamera(CameraUpdate.newLatLngZoom(
-          LatLng(position!.latitude, position!.longitude), 19));
+      LatLngBounds bounds = route.last.latitude < route.first.latitude
+          ? LatLngBounds(
+              southwest: LatLng(route.last.latitude, route.last.longitude),
+              northeast: LatLng(route.first.latitude, route.first.longitude))
+          : LatLngBounds(
+              southwest: LatLng(route.first.latitude, route.first.longitude),
+              northeast: LatLng(route.last.latitude, route.last.longitude));
+
+      mapsController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
     }
-    double zoom = 19;
 
     for (int i = 0; i < route.length - 1; i++) {
-      print(zoom);
-      if (i % 7 == 0) {
-        mapsController.animateCamera(CameraUpdate.newLatLngZoom(
-            LatLng(route[i].latitude, route[i].longitude), zoom));
-      }
-      if (i % 17 == 0) {
-        zoom = zoom - 1;
-      }
-      await Future.delayed(Duration(milliseconds: 70));
+      await Future.delayed(Duration(milliseconds: 10));
       polylineCoordinates.add(LatLng(route[i].latitude, route[i].longitude));
 
       PolylineId id = PolylineId("poly");
@@ -96,47 +96,103 @@ class MapsController extends GetxController {
     mapsController = controller;
   }
 
-  Future<void> moveMapCamera(double lat, double lng) async {
-    CameraPosition nepPos = CameraPosition(
-      target: LatLng(lat, lng),
-      zoom: 20,
-    );
+  // Future<void> moveMapCamera(double lat, double lng) async {
+  //   CameraPosition nepPos = CameraPosition(
+  //     target: LatLng(lat, lng),
+  //     zoom: 20,
+  //   );
 
-    mapsController.animateCamera(CameraUpdate.newCameraPosition(nepPos));
-  }
+  //   mapsController.animateCamera(CameraUpdate.newLatLngBounds());
+  // }
 
-  void animateDriverMovement(
-      List<PointLatLng> route, LatLng driver, String callBackStatus) async {
-    markers.removeWhere((marker) => marker.markerId == 'marker_driver_1');
-    List<PointLatLng> routeDriver = route;
-    for (int i = 1; i < routeDriver.length; i++) {
-      PointLatLng start = routeDriver[i - 1];
-      PointLatLng end = routeDriver[i];
-      final double distance = await Geolocator.distanceBetween(
-        start.latitude,
-        start.longitude,
-        end.latitude,
-        end.longitude,
-      );
-      markers.add(Marker(
-        icon: customIcon,
-        markerId: MarkerId('marker_driver'),
-        position: LatLng(
-          start.latitude,
-          start.longitude,
-        ),
-      ));
-      if (routeDriver.last.latitude == routeDriver[i].latitude) {
-        orderStatus.value = callBackStatus;
-        if (callBackStatus == "done") {
-          Get.toNamed("/driverMark");
-        }
-      }
-      double speed =
-          70.0; // Kecepatan dalam meter per detik (sesuaikan dengan kebutuhan Anda)
-      int durationInMilliseconds = (distance / speed * 1000).toInt();
-
-      await Future.delayed(Duration(milliseconds: durationInMilliseconds));
-    }
+  void packagehasDone() {
+    Get.dialog(
+        barrierDismissible: false,
+        Dialog(
+          backgroundColor: Colors.transparent,
+          child: WillPopScope(
+            onWillPop: () async => false,
+            child: Container(
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(20)),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Text(
+                      "Konirmasi",
+                      style: DynamicTextStyle.textBold(
+                          fontSize: 21, color: grey900),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  // Image.asset(AppImage.internetConnection,height:30),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      "Apakah pessanan anda telah di terima oleh pelanggan?",
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Get.back();
+                          Get.toNamed("/evidence");
+                        },
+                        child: Center(
+                          child: Container(
+                            height: 45,
+                            width: 100,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: themeGreen,
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(30))),
+                            child: Text(
+                              "Ya",
+                              style:
+                                  DynamicTextStyle.textBold(color: themeWhite),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 8,),
+                      InkWell(
+                        onTap: () {
+                          Get.back();
+                        },
+                        child: Center(
+                          child: Container(
+                            height: 45,
+                            width: 100,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: themeOrange,
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(30))),
+                            child: Text(
+                              "Tidak",
+                              style:
+                                  DynamicTextStyle.textBold(color: themeWhite),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ));
   }
 }

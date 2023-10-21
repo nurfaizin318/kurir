@@ -6,7 +6,7 @@ import '../Profile/View.dart';
 
 class LayoutController extends GetxController {
   RxInt currentIndex = 0.obs;
-
+  var curent = "".obs;
   final List<Widget> children = [
     HomePage(),
     HistoryPage(),
@@ -15,11 +15,12 @@ class LayoutController extends GetxController {
 
   void onTabTapped(int index) {
     currentIndex.value = index;
+
   }
 
   @override
   void onInit() {
-    // TODO: implement onInit
+
     super.onInit();
   }
 }

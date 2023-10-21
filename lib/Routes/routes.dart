@@ -35,7 +35,7 @@ class Routes {
         page: () => const IntroductionPage(),
         binding: IntroductionBinding()),
     GetPage(name: "/history", page: () => HistoryPage()),
-    GetPage(name: "/order", page: () => MapsPage()),
+    GetPage(name: "/order", page: () => MapsPage(), binding: MapsBinding()),
     GetPage(
         name: "/resetPassword",
         page: () => ResetPasswordPage(),

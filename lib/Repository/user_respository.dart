@@ -6,7 +6,7 @@ import 'package:kurir/Service/dio_service.dart';
 import 'package:kurir/Utils/Extention/Storage/hive.dart';
 import 'package:kurir/Utils/GlobalModel/base_response.dart';
 import 'package:dio/dio.dart';
-import 'package:get/get.dart' hide Response;
+import 'package:get/get.dart' hide Response,FormData;
 
 class UserRepositoryImpl {
   UserRepositoryImpl._();
@@ -37,21 +37,20 @@ class UserRepositoryImpl {
   }
 
   Future<BaseResponse> login(String username, String password) async {
-    final data = {
-      "no_telepon": username,
-      "password": password,
-      "role": "pelanggan"
-    };
+var formData = FormData.fromMap({
+ 'username': username,
+ 'password': password,
+});
 
     try {
       CancelToken cancelToken = CancelToken();
       Response response = await service.post(ApiPaths.login,
           cancelToken: cancelToken,
-          data: json.encode(data),
+          data: formData,
           useToken: false,
           isDisableBottomSheet: true);
       BaseResponse baseResponse = BaseResponse.fromJson(response.data);
-      if (baseResponse.code == 200 || baseResponse.code == 201) {
+      if (baseResponse.code == 200 || baseResponse.code == 0) {
         UserModel userModel = UserModel.fromJson(baseResponse.data);
         saveDataToStorage(userModel);
         return baseResponse;
@@ -85,11 +84,10 @@ class UserRepositoryImpl {
   }
 
   void saveDataToStorage(UserModel user) {
-    final userProfile = user.original.user;
-    final userToken = user.original.accessToken;
+    final userProfile = user;
+
 
     storage.save(StorageKey.IsLogin.value, "YES");
-    storage.save(StorageKey.Token.value, userToken);
     storage.saveJson(StorageKey.Profile.value, userProfile);
   }
 

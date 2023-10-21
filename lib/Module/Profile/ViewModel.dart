@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:kurir/Module/Login/model.dart';
 import 'package:kurir/Utils/Extention/AES/encrypt.dart';
 import 'package:kurir/Utils/Extention/Storage/hive.dart';
 import 'package:get/get.dart';
@@ -7,12 +8,12 @@ import 'Model.dart';
 
 class ProfileController extends GetxController {
 
-  Rxn<ProfileModel> profile = Rxn<ProfileModel>();
+  Rxn<UserModel> profile = Rxn<UserModel>();
   Storage storage = Storage();
 
   @override
   void onInit() async {
-    // getDataFromStorage();
+    getDataFromStorage();
     // TODO: implement onInit
     super.onInit();
   }
@@ -25,7 +26,7 @@ class ProfileController extends GetxController {
   void getDataFromStorage() {
     final profileData = storage.get(StorageKey.Profile.value);
 
-    profile.value = ProfileModel.fromJson(jsonDecode(profileData));
+    profile.value = UserModel.fromJson(jsonDecode(profileData));
     print(profile.value);
   }
 

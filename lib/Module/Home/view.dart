@@ -1,3 +1,4 @@
+import 'package:kurir/Module/Home/Model/news_model.dart';
 import 'package:kurir/Module/Home/viewModel.dart';
 import 'package:kurir/Utils/Color/color.dart';
 import 'package:kurir/Utils/Style/style.dart';
@@ -7,13 +8,13 @@ import 'package:get/get.dart';
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
-  final controller = Get.find<HomeController>();
+
 
   @override
   Widget build(BuildContext context) {
     double width = CustomSize(context).width;
     double height = CustomSize(context).height;
-    ;
+      final controller = Get.find<HomeController>();
 
     return Scaffold(
       appBar: AppBar(
@@ -24,67 +25,73 @@ class HomePage extends StatelessWidget {
             fontWeight: FontWeight.w400, color: grey900),
       ),
       body: Obx(
-        () => controller.isLoadNews.value
+        () => controller.isLoadList.value
             ? Container(
                 height: height,
                 width: width,
                 color: Color.fromRGBO(225, 225, 225, 0.5),
                 child: Center(child: CircularProgressIndicator()))
-            : Container(
-                padding: EdgeInsets.all(5),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: width,
-                      child:
-                          // Extracting data from snapshot object
-                          ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: controller.data.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              Get.toNamed("/detail");
-                            },
-                            child: Container(
-                              margin: EdgeInsets.all(5),
-                              width: width,
-                              decoration: RoundedBoxWithShadow.getDecoration(
-                                  color: themeWhite, elevation: 1),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  RowDate(),
-                                  RowProgress(),
-                                  Container(
-                                    width: double.infinity,
-                                    padding: EdgeInsets.only(left: 10, top: 5),
-                                    height: 25,
-                                    // color: themeGreen,
-                                    child: Text("Harus Segera Dikirim",
-                                        style: DynamicTextStyle.textNormal(
-                                            fontSize: 13, color: grey900)),
-                                  ),
-                                  RowDetail(),
-                                ],
+            : RefreshIndicator(
+              onRefresh: () async { 
+               await controller.getList();       
+              },
+              child: Container(
+                  padding: EdgeInsets.all(5),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: height * 0.77,
+                        width: width,
+                        child:
+                            // Extracting data from snapshot object
+                            ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: controller.listPaket.length,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: () {
+                                Get.toNamed("/detail",arguments: controller.listPaket[index].id);
+                              },
+                              child: Container(
+                                margin: EdgeInsets.all(5),
+                                width: width,
+                                decoration: RoundedBoxWithShadow.getDecoration(
+                                    color: themeWhite, elevation: 1),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    RowDate(controller.listPaket[index]),
+                                    RowProgress(controller.listPaket[index]),
+                                    Container(
+                                      width: double.infinity,
+                                      padding: EdgeInsets.only(left: 10, top: 5),
+                                      height: 25,
+                                      // color: themeGreen,
+                                      child: Text("Harus Segera Dikirim",
+                                          style: DynamicTextStyle.textNormal(
+                                              fontSize: 13, color: grey900)),
+                                    ),
+                                    RowDetail(controller.listPaket[index]),
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      ),
-                    )
-
-                    // Future that needs to be resolved
-                    // inorder to display something on the Canvas
-                  ],
+                            );
+                          },
+                        ),
+                      )
+            
+                      // Future that needs to be resolved
+                      // inorder to display something on the Canvas
+                    ],
+                  ),
                 ),
-              ),
+            ),
       ),
     );
   }
 
-  Container RowDetail() {
+  Container RowDetail(PackageModel data) {
     return Container(
       padding: EdgeInsets.all(10),
       height: 60,
@@ -138,7 +145,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Container RowProgress() {
+  Container RowProgress(PackageModel data) {
     return Container(
       padding: EdgeInsets.all(10),
       height: 55,
@@ -200,14 +207,14 @@ class HomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    "Muhammad Naufal",
+                    data.namaPemesan,
                     style: DynamicTextStyle.textBold(
                         fontWeight: FontWeight.w600,
                         color: themeGreen,
                         fontSize: 13),
                   ),
                   Text(
-                    "0787878787878",
+                    "0875637483929",
                     style: DynamicTextStyle.textNormal(
                         color: grey400, fontSize: 13),
                   ),
@@ -220,7 +227,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Container RowDate() {
+  Container RowDate(PackageModel data) {
     return Container(
       padding: EdgeInsets.all(10),
       height: 60,
@@ -245,10 +252,10 @@ class HomePage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Senin, 17 Agustus 2023",
+              Text(data.tanggalPesanan,
                   style: DynamicTextStyle.textNormal(
                       fontSize: 13, color: grey900)),
-              Text("#GC-01-8882873837",
+              Text(data.kodePesanan,
                   style:
                       DynamicTextStyle.textNormal(fontSize: 13, color: grey900))
             ],

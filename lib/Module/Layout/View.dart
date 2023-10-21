@@ -11,53 +11,7 @@ class Layout extends StatelessWidget {
     final controller = Get.find<LayoutController>();
 
     return Scaffold(
-        // appBar: AppBar(
-        //   actions: <Widget>[
-        //     IconButton(
-        //       icon: const Icon(
-        //         Icons.chat_bubble,
-        //         color: Colors.white,
-        //       ),
-        //       onPressed: () {
-        //         // do something
-        //         controller.goToChat();
-        //       },
-        //     ),
-        //     IconButton(
-        //       icon: const Icon(
-        //         Icons.notifications,
-        //         color: Colors.white,
-        //       ),
-        //       onPressed: () {
-        //         // do something
-        //       },
-        //     )
-        //   ],
-        //   title: Align(
-        //     alignment: Alignment.centerLeft,
-        //     child: SizedBox(
-        //       height: 30,
-        //       child: TextField(
-        //         textAlignVertical: TextAlignVertical.bottom,
-        //         decoration: InputDecoration(
-        //             hintText: "Cari",
-        //             isDense: true,
-        //             counterText: "",
-        //             filled: true,
-        //             prefixIcon: const Icon(Icons.search),
-        //             fillColor: Colors.grey[200],
-        //             border: OutlineInputBorder(
-        //                 borderRadius: BorderRadius.circular(25.0),
-        //                 borderSide: BorderSide.none)),
-        //         textAlign: TextAlign.start,
-        //         maxLines: 1,
-        //         maxLength: 20,
-        //         // controller: _locationNameTextController,
-        //       ),
-        //     ),
-        //   ),
-        // ),
-
+     
         bottomNavigationBar: Obx(
           () => BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
@@ -86,10 +40,7 @@ class Layout extends StatelessWidget {
           ),
         ),
         body: Obx(
-          () => IndexedStack(
-            index: controller.currentIndex.value,
-            children: controller.children,
-          ),
+          () => controller.children[controller.currentIndex.value]
         ));
   }
 }

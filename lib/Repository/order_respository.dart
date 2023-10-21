@@ -1,8 +1,7 @@
-import 'package:kurir/Module/Maps/model/find_place.dart';
+import 'package:kurir/Config/api_path.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
+import 'package:kurir/Utils/GlobalModel/base_response.dart';
 import '../Service/dio_service.dart';
-
 
 class OrderRepositoryImpl {
   OrderRepositoryImpl._();
@@ -10,19 +9,25 @@ class OrderRepositoryImpl {
 
   static final instance = OrderRepositoryImpl._();
 
-  Future<FindPlaceModel> findPlace(String destination) async {
-    String formatedDestination = destination.replaceAll(' ', '%');
-
-    String path =
-        'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=formatted_address%2Cname%2Crating%2Copening_hours%2Cgeometry&input=${formatedDestination}&inputtype=textquery&key=AIzaSyCQs25mTVtedEKxsiVi3aG3FgruPfjQXsc';
+  Future sendPackage(String id) async {
+    var formData = FormData.fromMap({
+      'idPemesan': id,
+    });
 
     try {
-      FindPlaceModel findPlaceModel;
-      Response response = await service.get(path);
-      findPlaceModel = FindPlaceModel.fromJson(response.data);
-      return findPlaceModel;
+      CancelToken cancelToken = CancelToken();
+      Response response = await service.post(ApiPaths.updatePaket,
+          cancelToken: cancelToken,
+          data: formData,
+          useToken: false,
+          isDisableBottomSheet: true);
+      BaseResponse baseResponse = BaseResponse.fromJson(response.data);
+      if (baseResponse.code == 200 || baseResponse.code == 0) {
+        return baseResponse;
+      } else {
+        throw response.statusMessage.toString();
+      }
     } catch (e) {
-      debugPrint(e.toString());
       throw e;
     }
   }

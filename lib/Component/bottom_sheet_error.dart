@@ -1,3 +1,4 @@
+import 'package:kurir/Utils/Color/color.dart';
 import 'package:kurir/Utils/Style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -50,7 +51,16 @@ class BottomSheetError {
                   Expanded(
                       flex: 3,
                       child: Image.asset('assets/images/error400.png')),
-                  Expanded(flex: 1, child: Text(errorMessage))
+                  Expanded(flex: 1, child: Text(errorMessage)),
+                  InkWell(
+                    child: Container(
+                      width: 250,
+                      height: 250,
+                      decoration: RoundedFixBox.getDecoration(
+                          color: blue800, radius: 30),
+                          child: Text("Tutup",style: TextStyle(color: themeWhite),),
+                    ),
+                  )
                 ],
               ),
             );

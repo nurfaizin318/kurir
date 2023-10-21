@@ -1,5 +1,6 @@
 import 'dart:async';
-import 'dart:developer';
+
+import 'dart:io';
 import 'package:alice/alice.dart';
 import 'package:kurir/Component/bottom_sheet_receiveTimeout.dart';
 import 'package:kurir/Config/api_path.dart';
@@ -27,6 +28,8 @@ abstract class BaseService {
       CancelToken? cancelToken,
       ProgressCallback? onSendProgress,
       ProgressCallback? onReceiveProgress});
+
+      
   // Future<Map<String, dynamic>> put(String path,
   //     {data,
   //     Map<String, dynamic>? queryParameters,
@@ -42,6 +45,16 @@ abstract class BaseService {
   //     CancelToken? cancelToken,
   //     ProgressCallback? onSendProgress,
   //     ProgressCallback? onReceiveProgress});
+
+}
+
+Future<bool> hasNetwork() async {
+  try {
+    final result = await InternetAddress.lookup('example.com');
+    return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+  } on SocketException catch (_) {
+    return false;
+  }
 }
 
 class Service implements BaseService {
@@ -62,7 +75,6 @@ class Service implements BaseService {
   );
   Dio dio = Dio(baseOptions);
 
-  /// kalo mau tanpa bearer pakai ini
   Service clearToken() {
     dio.interceptors.add(AuthInterceptor(""));
     return this;
@@ -107,7 +119,9 @@ class Service implements BaseService {
       baseOptions.headers['Authorization'] = 'Bearer $token';
     }
 
+
     try {
+  
       final Response response = await dio.get(
         path,
         queryParameters: queryParameters,

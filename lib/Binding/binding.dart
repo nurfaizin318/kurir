@@ -45,10 +45,10 @@ class LayoutBinding implements Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => LayoutController(), fenix: true);
-    Get.lazyPut(() => HomeController(), fenix: true);
+    Get.lazyPut(() => HomeController(), fenix: false);
     Get.lazyPut(() => HistoryController(), fenix: false);
     Get.lazyPut(() =>  MapsController(), fenix: false);
-    Get.lazyPut(() => ProfileController(), fenix: true);
+    Get.lazyPut(() => ProfileController(), fenix: false);
   }
 }
 
@@ -84,5 +84,12 @@ class EvidenceBinding implements Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => EvidenceController(), fenix: false);
+  }
+}
+
+class MapsBinding implements Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => MapsController(), fenix: false);
   }
 }

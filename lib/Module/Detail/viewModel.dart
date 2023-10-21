@@ -1,84 +1,54 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart' hide Response;
+import 'package:kurir/Component/bottom_sheet_error.dart';
+import 'package:kurir/Module/Detail/model.dart';
+import 'package:kurir/Repository/detail_repository.dart';
 import 'package:kurir/Service/dio_service.dart';
 
 import '../../Utils/Extention/Permision/Location_Permision/permision.dart';
 
 class DetailController extends GetxController {
   final service = Service.instance;
-  RxBool isGetPolyline = false.obs;
+  RxBool isLoadDetail = false.obs;
+  Rxn<DetailPaketModel> detailPaket = Rxn<DetailPaketModel>();
   late Position? position;
-
-  List type = ["BillCar", "BillJeck", "BillFood"];
-
-  List data = [
-    {
-      "type": "billCar",
-      "title": "Perjalanan ke Palmerah",
-      "date": "15 gustus 2022",
-      "price": "Rp15.000"
-    },
-    {
-      "type": "billCar",
-      "title": "Perjalanan ke Tanah Abang",
-      "date": "15 gustus 2022",
-      "price": "Rp15.000"
-    }
-  ].obs;
 
   @override
   void onInit() async {
-  
-  PermissionToUser.permissionForLocation().then((value) async {
-    position = await PermissionToUser.determinePosition();
-
+    PermissionToUser.permissionForLocation().then((value) async {
+      position = await PermissionToUser.determinePosition();
+      getListDetailPaket();
     });
     super.onInit();
   }
 
-  Future<List> getData() {
-    return Future.delayed(Duration(seconds: 2), () {
-      return data;
-      // throw Exception("Custom Error");
-    });
+  void getListDetailPaket() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      BottomSheet400().show("Perika koneksi internet Anda");
+    } else {
+      isLoadDetail.value = true;
+      try {
+        final baseResponse = await DetailRepository.instance
+            .getDetail(int.parse(Get.arguments[0]));
+        DetailPaketModel detail = DetailPaketModel.fromJson(baseResponse.data);
+        detailPaket.value = detail;
+        isLoadDetail.value = false;
+      } catch (error) {
+        isLoadDetail.value = false;
+        throw Exception('failed fetch list $error');
+      }
+    }
   }
 
-  Future<void> findPlace() async {
-    isGetPolyline.value = true;
+  void navigateToMaps() {
+    final polylinePoints = detailPaket.value?.overviewPolyline;
 
-  
+    final decodedPoints = PolylinePoints().decodePolyline(polylinePoints ?? "");
 
-    final apiKey = 'AIzaSyBTS-qAl0ryqDGIF9DGZ3OhXHxvuXbYRrU';
-    final originLat = position?.latitude;
-    final originLng = position?.longitude;
-    final destinationAddress = 'stasiun pondok ranji';
-
-    final url =
-        'https://maps.googleapis.com/maps/api/directions/json?origin=$originLat,$originLng&destination=$destinationAddress&key=$apiKey';
-
-    Response response = await service.get(
-      url,
-      useToken: false,
-    );
-
-    if (response.statusCode == 200) {
-      // final jsonResponse = json.decode(response.data);
-      final polylinePoints =
-          response.data['routes'][0]['overview_polyline']['points'];
-
-      final decodedPoints = PolylinePoints().decodePolyline(polylinePoints);
-
-      Get.toNamed("/order", arguments: decodedPoints);
-
-      isGetPolyline.value = false;
-      // Sekarang Anda memiliki polyline dalam format encoded.
-    } else {
-      isGetPolyline.value = false;
-      throw Exception('Failed to load directions');
-    }
+    Get.toNamed("/order",
+        arguments: [decodedPoints, detailPaket.value?.alamatPengiriman]);
   }
 }

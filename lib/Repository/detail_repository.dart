@@ -2,17 +2,15 @@ import 'package:kurir/Config/api_path.dart';
 import 'package:kurir/Utils/GlobalModel/base_response.dart';
 import '../Service/dio_service.dart';
 
-
-
-class HomeRepositoryImpl {
-  HomeRepositoryImpl._();
+class DetailRepository {
+  DetailRepository._();
   final service = Service.instance;
 
-  static final instance = HomeRepositoryImpl._();
+  static final instance = DetailRepository._();
 
-  Future<BaseResponse> getList() async {
+  Future<BaseResponse> getDetail(int id) async {
     try {
-      final response = await service.get(ApiPaths.listBarang, useToken: false);
+      final response = await service.withRequestHandler().get(ApiPaths.detailBarang+"?idPemesan"+id.toString(), useToken: false, queryParameters:{"idPemesanan":id });
       BaseResponse baseResponse = BaseResponse.fromJson(response.data);
       if (baseResponse.code == 200 || baseResponse.code == 0) {
         return baseResponse;
@@ -23,6 +21,4 @@ class HomeRepositoryImpl {
       throw error;
     }
   }
-
-
 }

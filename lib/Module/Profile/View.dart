@@ -59,7 +59,7 @@ class ProfilePage extends StatelessWidget {
                           children: [
                             Text(
                               textAlign: TextAlign.start,
-                              "Nama Kurir",
+                              profile?.nama?? "",
                               style: TextStyle(
                                   fontSize: 23, fontWeight: FontWeight.bold),
                             ),
@@ -82,17 +82,17 @@ class ProfilePage extends StatelessWidget {
                   // color: Colors.grey,
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.email_outlined,
-                            color: Colors.grey,
-                          ),
-                          SizedBox(width: 10),
-                          Text("email@gmail.com",
-                              style: TextStyle(color: Colors.grey))
-                        ],
-                      ),
+                      // Row(
+                      //   children: [
+                      //     Icon(
+                      //       Icons.email_outlined,
+                      //       color: Colors.grey,
+                      //     ),
+                      //     SizedBox(width: 10),
+                      //     Text("email@gmail.com",
+                      //         style: TextStyle(color: Colors.grey))
+                      //   ],
+                      // ),
                       SizedBox(
                         height: 15,
                       ),
@@ -124,12 +124,12 @@ class ProfilePage extends StatelessWidget {
                       SizedBox(
                         height: 10,
                       ),
-                      const Text("Saldo kurir"),
+                      const Text("Point"),
                       const SizedBox(
                         height: 10,
                       ),
                       Text(
-                        "Rp. 180.000",
+                        "10",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 32,
