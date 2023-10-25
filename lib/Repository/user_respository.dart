@@ -112,12 +112,6 @@ var formData = FormData.fromMap({
 
   Future logOut() async {
     try {
-      Response response =
-          await service.post(ApiPaths.logout, data: {}, useToken: true);
-
-      print('response ${response.toString()}');
-      BaseResponse baseResponse = BaseResponse.fromJson(response.data);
-
       Storage.instance.clearAll();
       Get.offAllNamed("/login");
     } catch (e) {

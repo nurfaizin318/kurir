@@ -17,10 +17,8 @@ class DetailController extends GetxController {
 
   @override
   void onInit() async {
-    PermissionToUser.permissionForLocation().then((value) async {
-      position = await PermissionToUser.determinePosition();
       getListDetailPaket();
-    });
+
     super.onInit();
   }
 

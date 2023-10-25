@@ -10,10 +10,12 @@ class ProfileController extends GetxController {
 
   Rxn<UserModel> profile = Rxn<UserModel>();
   Storage storage = Storage();
-
+  RxInt point = 0.obs;
   @override
   void onInit() async {
     getDataFromStorage();
+
+  getPoint();
     // TODO: implement onInit
     super.onInit();
   }
@@ -21,6 +23,16 @@ class ProfileController extends GetxController {
   @override
   void onReady() {
     // TODO: implement onReady
+  }
+
+  void getPoint(){
+    var getPoint = storage.get("point");
+  
+  }
+
+
+  void addPoint(){
+  point.value = point.value + 10;
   }
 
   void getDataFromStorage() {

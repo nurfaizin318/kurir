@@ -41,7 +41,7 @@ class HomePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        height: height * 0.77,
+                     
                         width: width,
                         child:
                             // Extracting data from snapshot object

@@ -10,7 +10,7 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ProfileController>();
+    final controller = Get.put<ProfileController>(ProfileController());
     final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
     final profile = controller.profile.value;
 
@@ -128,13 +128,13 @@ class ProfilePage extends StatelessWidget {
                       const SizedBox(
                         height: 10,
                       ),
-                      Text(
-                        "10",
+                      Obx(()=>Text(
+                        controller.point.value.toString(),
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 32,
                             color: Colors.grey[700]),
-                      )
+                      ))
                     ],
                   ),
                 ),

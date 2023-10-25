@@ -5,7 +5,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:kurir/Component/bottom_sheet_error.dart';
 
 import 'package:kurir/Module/Evidence/view.dart';
+import 'package:kurir/Module/Profile/ViewModel.dart';
 import 'package:kurir/Repository/order_respository.dart';
+import 'package:kurir/Utils/Extention/Storage/hive.dart';
 
 import '../../Utils/Color/color.dart';
 
@@ -15,6 +17,10 @@ class EvidenceController extends GetxController {
   RxBool isSendImage = false.obs;
   RxBool isLoadCamera = false.obs;
   RxBool isSendPackage = false.obs;
+  Storage  storage = Storage();
+    final profileController = Get.put<ProfileController>(ProfileController());
+
+  late var  point = 0;
   var idPackage = Get.arguments;
 
   Future<void> getImageFromCamera() async {
@@ -42,6 +48,8 @@ class EvidenceController extends GetxController {
         Get.snackbar("Status", baseResponse.status,
             backgroundColor: blue500, colorText: Colors.white);
         if (baseResponse.code == 0) {
+          storage.save("point", (point + 10).toString());
+          profileController.addPoint();
           Get.toNamed("/layout");
         }
         isSendPackage.value = false;
@@ -55,6 +63,8 @@ class EvidenceController extends GetxController {
   @override
   void onInit() {
     getImageFromCamera();
+    var getPoint = storage.get("point");
+    point = int.parse(getPoint);
     super.onInit();
   }
 }
