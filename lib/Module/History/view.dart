@@ -1,5 +1,5 @@
 import 'package:kurir/Module/History/viewModel.dart';
-import 'package:kurir/Module/Home/Model/news_model.dart';
+import 'package:kurir/Module/Home/Model/package_model.dart';
 import 'package:kurir/Utils/Color/color.dart';
 import 'package:kurir/Utils/Style/style.dart';
 import 'package:flutter/material.dart';
@@ -35,56 +35,44 @@ class HistoryPage extends StatelessWidget {
               onRefresh: () async { 
                await controller.getList();       
               },
-              child: Container(
-                  padding: EdgeInsets.all(5),
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: controller.listPaket.length,
+                  itemBuilder: (context, index) {
+              return InkWell(
+                onTap: () {
+                  Get.toNamed("/detail",arguments: [controller.listPaket[index].id,true]);
+                },
+                child: Container(
+                  margin: EdgeInsets.all(5),
+                  width: width,
+                  decoration: RoundedBoxWithShadow.getDecoration(
+                      color: themeWhite, elevation: 1),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      RowDate(controller.listPaket[index]),
+                      RowProgress(controller.listPaket[index]),
                       Container(
-                        height: height * 0.77,
-                        width: width,
-                        child:
-                            // Extracting data from snapshot object
-                            ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: controller.listPaket.length,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                Get.toNamed("/detail",arguments: controller.listPaket[index].id);
-                              },
-                              child: Container(
-                                margin: EdgeInsets.all(5),
-                                width: width,
-                                decoration: RoundedBoxWithShadow.getDecoration(
-                                    color: themeWhite, elevation: 1),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    RowDate(controller.listPaket[index]),
-                                    RowProgress(controller.listPaket[index]),
-                                    Container(
-                                      width: double.infinity,
-                                      padding: EdgeInsets.only(left: 10, top: 5),
-                                      height: 25,
-                                      // color: themeGreen,
-                                      child: Text("Harus Segera Dikirim",
-                                          style: DynamicTextStyle.textNormal(
-                                              fontSize: 13, color: grey900)),
-                                    ),
-                                    RowDetail(controller.listPaket[index]),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      )
-            
-                      // Future that needs to be resolved
-                      // inorder to display something on the Canvas
+                        width: double.infinity,
+                        padding: EdgeInsets.only(left: 10, top: 5),
+                        height: 25,
+                        // color: themeGreen,
+                        child:controller.listPaket[index].status == "1" ? Text("Sudah Selesai",
+                            style: DynamicTextStyle.textNormal(
+                                fontSize: 13, color: grey900)) : controller.listPaket[index].status == "2" ? Text("Sedang Dikirim",
+                            style: DynamicTextStyle.textNormal(
+                                fontSize: 13, color: grey900)) : Text("Harus Segera Dikirim",
+                            style: DynamicTextStyle.textNormal(
+                                fontSize: 13, color: grey900)),
+                      ),
+                      SizedBox(height: 4,),
+                      RowDetail(controller.listPaket[index]),
                     ],
                   ),
+                ),
+              );
+                  },
                 ),
             ),
       ),

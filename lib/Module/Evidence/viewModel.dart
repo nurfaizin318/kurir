@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:kurir/Component/bottom_sheet_error.dart';
 
 import 'package:kurir/Module/Evidence/view.dart';
+import 'package:kurir/Module/Layout/viewModel.dart';
 import 'package:kurir/Module/Profile/ViewModel.dart';
 import 'package:kurir/Repository/order_respository.dart';
 import 'package:kurir/Utils/Extention/Storage/hive.dart';
@@ -19,6 +20,7 @@ class EvidenceController extends GetxController {
   RxBool isSendPackage = false.obs;
   Storage  storage = Storage();
     final profileController = Get.put<ProfileController>(ProfileController());
+        final layOutController = Get.put<LayoutController>(LayoutController());
 
   late var  point = 0;
   var idPackage = Get.arguments;
@@ -43,15 +45,32 @@ class EvidenceController extends GetxController {
     } else {
       try {
         isSendPackage.value = true;
+        ///[contoh id kosong]
+        ///
+        //  final baseResponse =
+        //     await OrderRepositoryImpl.instance.sendPackage(
+        //        "");
+     
+     /// komen di base response ini 
         final baseResponse =
             await OrderRepositoryImpl.instance.sendPackage(Evidence().detail.detailPaket.value?.kodePesanan ?? "");
+    /// -----------------------------------------------------   -------------------------------------
         Get.snackbar("Status", baseResponse.status,
             backgroundColor: blue500, colorText: Colors.white);
         if (baseResponse.code == 0) {
           storage.save("point", (point + 10).toString());
           profileController.addPoint();
+             Get.snackbar("Status", baseResponse.status,
+            backgroundColor: blue500, colorText: Colors.white);
+       
           Get.toNamed("/layout");
+             layOutController.onTabTapped(1);
+        }else{
+              Get.snackbar("Status", "gagal update data",
+            backgroundColor: red600, colorText: Colors.white);
         }
+         
+        
         isSendPackage.value = false;
       } catch (error) {
         isSendPackage.value = false;

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'dart:io';
 import 'package:alice/alice.dart';
@@ -174,7 +175,7 @@ class Service implements BaseService {
         return response;
       } else {
         if (isDisableBottomSheet == true) {
-          throw response.statusMessage.toString();
+          throw response.data["data"];
         } else {
           throw DioCustomException.instance.handleStatusCode(response);
         }
@@ -184,57 +185,6 @@ class Service implements BaseService {
     }
   }
 
-  ///Put Method
-  // Future<Map<String, dynamic>> put(String path,
-  //     {data,
-  //     Map<String, dynamic>? queryParameters,
-  //     Options? options,
-  //     CancelToken? cancelToken,
-  //     ProgressCallback? onSendProgress,
-  //     ProgressCallback? onReceiveProgress}) async {
-  //   try {
-  //     final Response response = await dio.put(
-  //       path,
-  //       data: data,
-  //       queryParameters: queryParameters,
-  //       options: options,
-  //       cancelToken: cancelToken,
-  //       onSendProgress: onSendProgress,
-  //       onReceiveProgress: onReceiveProgress,
-  //     );
-  //     if (response.statusCode == 200) {
-  //       return response.data;
-  //     }
-  //     throw "something went wrong";
-  //   } catch (e) {
-  //     throw DioException;
-  //   }
-  // }
-
-  ///Delete Method
-  // Future<Map<String, dynamic>> delete(String path,
-  //     {data,
-  //     Map<String, dynamic>? queryParameters,
-  //     Options? options,
-  //     CancelToken? cancelToken,
-  //     ProgressCallback? onSendProgress,
-  //     ProgressCallback? onReceiveProgress}) async {
-  //   try {
-  //     final Response response = await dio.delete(
-  //       path,
-  //       data: data,
-  //       queryParameters: queryParameters,
-  //       options: options,
-  //       cancelToken: cancelToken,
-  //     );
-  //     if (response.statusCode == 204) {
-  //       return response.data;
-  //     }
-  //     throw "something went wrong";
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
 
   void cancelRequest() {
     try {

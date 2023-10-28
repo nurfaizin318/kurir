@@ -55,7 +55,7 @@ class BottomSheetError {
                   InkWell(
                     child: Container(
                       width: 250,
-                      height: 250,
+                      height: 50,
                       decoration: RoundedFixBox.getDecoration(
                           color: blue800, radius: 30),
                           child: Text("Tutup",style: TextStyle(color: themeWhite),),

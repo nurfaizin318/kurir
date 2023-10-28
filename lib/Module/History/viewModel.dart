@@ -1,7 +1,7 @@
 import 'package:connectivity/connectivity.dart';
 import 'package:get/get.dart';
 import 'package:kurir/Component/bottom_sheet_error.dart';
-import 'package:kurir/Module/Home/Model/news_model.dart';
+import 'package:kurir/Module/Home/Model/package_model.dart';
 import 'package:kurir/Repository/history_repository.dart';
 
 class HistoryController extends GetxController {

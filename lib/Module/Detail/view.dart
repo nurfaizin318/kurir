@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:kurir/Module/Detail/viewModel.dart';
 import 'package:kurir/Utils/Color/color.dart';
 import 'package:kurir/Utils/Style/style.dart';
@@ -167,7 +165,7 @@ class Detail extends StatelessWidget {
                     SizedBox(
                       height: 50,
                     ),
-                    InkWell(
+                   if (Get.arguments[1] == false) InkWell(
                       onTap: () {
                         controller.navigateToMaps();
                       },

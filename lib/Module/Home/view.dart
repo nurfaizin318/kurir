@@ -1,4 +1,4 @@
-import 'package:kurir/Module/Home/Model/news_model.dart';
+import 'package:kurir/Module/Home/Model/package_model.dart';
 import 'package:kurir/Module/Home/viewModel.dart';
 import 'package:kurir/Utils/Color/color.dart';
 import 'package:kurir/Utils/Style/style.dart';
@@ -35,56 +35,39 @@ class HomePage extends StatelessWidget {
               onRefresh: () async { 
                await controller.getList();       
               },
-              child: Container(
-                  padding: EdgeInsets.all(5),
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: controller.listPaket.length,
+                  itemBuilder: (context, index) {
+              return InkWell(
+                onTap: () {
+                  Get.toNamed("/detail",arguments: [controller.listPaket[index].id,false]);
+                },
+                child: Container(
+                  margin: EdgeInsets.all(5),
+                  width: width,
+                  decoration: RoundedBoxWithShadow.getDecoration(
+                      color: themeWhite, elevation: 1),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      RowDate(controller.listPaket[index]),
+                      RowProgress(controller.listPaket[index]),
                       Container(
-                     
-                        width: width,
-                        child:
-                            // Extracting data from snapshot object
-                            ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: controller.listPaket.length,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                Get.toNamed("/detail",arguments: controller.listPaket[index].id);
-                              },
-                              child: Container(
-                                margin: EdgeInsets.all(5),
-                                width: width,
-                                decoration: RoundedBoxWithShadow.getDecoration(
-                                    color: themeWhite, elevation: 1),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    RowDate(controller.listPaket[index]),
-                                    RowProgress(controller.listPaket[index]),
-                                    Container(
-                                      width: double.infinity,
-                                      padding: EdgeInsets.only(left: 10, top: 5),
-                                      height: 25,
-                                      // color: themeGreen,
-                                      child: Text("Harus Segera Dikirim",
-                                          style: DynamicTextStyle.textNormal(
-                                              fontSize: 13, color: grey900)),
-                                    ),
-                                    RowDetail(controller.listPaket[index]),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      )
-            
-                      // Future that needs to be resolved
-                      // inorder to display something on the Canvas
+                        width: double.infinity,
+                        padding: EdgeInsets.only(left: 10, top: 5),
+                        height: 25,
+                        // color: themeGreen,
+                        child: Text("Harus Segera Dikirim",
+                            style: DynamicTextStyle.textNormal(
+                                fontSize: 13, color: grey900)),
+                      ),
+                      RowDetail(controller.listPaket[index]),
                     ],
                   ),
+                ),
+              );
+                  },
                 ),
             ),
       ),

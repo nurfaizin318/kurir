@@ -20,7 +20,7 @@ class LayoutController extends GetxController {
 
   @override
   void onInit() {
-
+  
     super.onInit();
   }
 }

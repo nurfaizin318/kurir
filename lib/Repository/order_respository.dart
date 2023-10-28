@@ -22,11 +22,9 @@ class OrderRepositoryImpl {
           useToken: false,
           isDisableBottomSheet: true);
       BaseResponse baseResponse = BaseResponse.fromJson(response.data);
-      if (baseResponse.code == 200 || baseResponse.code == 0) {
+   
         return baseResponse;
-      } else {
-        throw response.statusMessage.toString();
-      }
+     
     } catch (e) {
       throw e;
     }

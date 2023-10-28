@@ -57,6 +57,7 @@ class PackageModel {
     String alamatPengiriman;
     String lat;
     String long;
+    String status;
 
     PackageModel({
         required this.id,
@@ -66,6 +67,7 @@ class PackageModel {
         required this.alamatPengiriman,
         required this.lat,
         required this.long,
+        required this.status,
     });
 
     factory PackageModel.fromJson(Map<String, dynamic> json) => PackageModel(
@@ -76,6 +78,7 @@ class PackageModel {
         alamatPengiriman: json["alamat_pengiriman"],
         lat: json["lat"],
         long: json["long"],
+        status: json["status"],
     );
 
     Map<String, dynamic> toJson() => {

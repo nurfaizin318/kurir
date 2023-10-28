@@ -1,4 +1,4 @@
-import 'package:kurir/Module/Home/Model/news_model.dart';
+import 'package:kurir/Module/Home/Model/package_model.dart';
 import 'package:kurir/Repository/home_repository.dart';
 import 'package:get/get.dart';
 import 'package:connectivity/connectivity.dart';

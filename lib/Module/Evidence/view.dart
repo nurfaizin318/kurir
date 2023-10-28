@@ -21,8 +21,10 @@ class Evidence extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: themeGreen,
         leading: BackButton(onPressed: () {
           Get.back();
+          
         }),
         actions: [
           TextButton(
@@ -77,7 +79,7 @@ class Evidence extends StatelessWidget {
                                 width: width * 0.8,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                      backgroundColor: blue600),
+                                      backgroundColor: themeGreen),
                                   onPressed: () {
                                     controller.sendImage();
                                   },

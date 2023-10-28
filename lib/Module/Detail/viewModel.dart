@@ -7,18 +7,18 @@ import 'package:kurir/Module/Detail/model.dart';
 import 'package:kurir/Repository/detail_repository.dart';
 import 'package:kurir/Service/dio_service.dart';
 
-import '../../Utils/Extention/Permision/Location_Permision/permision.dart';
-
 class DetailController extends GetxController {
   final service = Service.instance;
   RxBool isLoadDetail = false.obs;
   Rxn<DetailPaketModel> detailPaket = Rxn<DetailPaketModel>();
-  late Position? position;
+  late Position position;
 
   @override
   void onInit() async {
-      getListDetailPaket();
-
+ 
+    position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+           getListDetailPaket();
     super.onInit();
   }
 
@@ -30,12 +30,13 @@ class DetailController extends GetxController {
       isLoadDetail.value = true;
       try {
         final baseResponse = await DetailRepository.instance
-            .getDetail(int.parse(Get.arguments[0]));
+            .getDetail(int.parse(Get.arguments[0]), position);
         DetailPaketModel detail = DetailPaketModel.fromJson(baseResponse.data);
         detailPaket.value = detail;
         isLoadDetail.value = false;
       } catch (error) {
         isLoadDetail.value = false;
+        BottomSheetError().show("Gagal parsing data");
         throw Exception('failed fetch list $error');
       }
     }
