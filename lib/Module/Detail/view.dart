@@ -83,7 +83,16 @@ class Detail extends StatelessWidget {
                           ],
                         ),
                         RowProgress(),
+                        controller.detailPaket.value?.status == "1" ?
                         Text(
+                          "Sudah dikirim",
+                          style: DynamicTextStyle.textBold(
+                              color: Colors.teal),
+                        ) : controller.detailPaket.value?.status == "2" ?  Text(
+                          "Sudah dikirim",
+                          style: DynamicTextStyle.textBold(
+                              color: Colors.teal),
+                        ) :  Text(
                           "Harus Segera Dikirim",
                           style: DynamicTextStyle.textBold(
                               color: Colors.teal),
