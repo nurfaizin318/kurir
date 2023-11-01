@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:kurir/Component/bottom_sheet_error.dart';
 
 import 'package:kurir/Module/Evidence/view.dart';
+import 'package:kurir/Module/History/viewModel.dart';
 import 'package:kurir/Module/Layout/viewModel.dart';
 import 'package:kurir/Module/Profile/ViewModel.dart';
 import 'package:kurir/Repository/order_respository.dart';
@@ -19,8 +20,9 @@ class EvidenceController extends GetxController {
   RxBool isLoadCamera = false.obs;
   RxBool isSendPackage = false.obs;
   Storage  storage = Storage();
-    final profileController = Get.put<ProfileController>(ProfileController());
-        final layOutController = Get.put<LayoutController>(LayoutController());
+  final profileController = Get.put<ProfileController>(ProfileController());
+  final layOutController = Get.put<LayoutController>(LayoutController());
+  final historyController = Get.put<HistoryController>(HistoryController());
 
   late var  point = 0;
   var idPackage = Get.arguments;
@@ -55,8 +57,7 @@ class EvidenceController extends GetxController {
         final baseResponse =
             await OrderRepositoryImpl.instance.sendPackage(Evidence().detail.detailPaket.value?.kodePesanan ?? "");
     /// -----------------------------------------------------   -------------------------------------
-        Get.snackbar("Status", baseResponse.status,
-            backgroundColor: blue500, colorText: Colors.white);
+    
         if (baseResponse.code == 0) {
           storage.save("point", (point + 10).toString());
           profileController.addPoint();
@@ -65,6 +66,7 @@ class EvidenceController extends GetxController {
        
           Get.toNamed("/layout");
              layOutController.onTabTapped(1);
+             historyController.getList();
         }else{
               Get.snackbar("Status", "gagal update data",
             backgroundColor: red600, colorText: Colors.white);
