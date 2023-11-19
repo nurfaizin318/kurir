@@ -48,7 +48,7 @@ class Evidence extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 ),
               )
-            : controller.isSendImage.value
+            : controller.isSendPackage.value
                 ? Container(
                     height: height,
                     width: width,

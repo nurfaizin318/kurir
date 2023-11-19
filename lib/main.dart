@@ -44,10 +44,7 @@ class _MyAppState extends State<MyApp> {
       maxCallsCount: 1000,
     );
 
-
     _dio.interceptors.add(_alice.getDioInterceptor());
-
-
 
   }
 

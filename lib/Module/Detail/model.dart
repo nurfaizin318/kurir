@@ -20,6 +20,7 @@ class DetailPaketModel {
     String long;
     String status;
     List<ListBarang> listBarang;
+    String? bukti;
 
     DetailPaketModel({
         required this.namaPemesan,
@@ -32,7 +33,8 @@ class DetailPaketModel {
         required this.lat,
         required this.long,
         required this.listBarang,
-        required this.status
+        required this.status,
+        this.bukti
     });
 
     factory DetailPaketModel.fromJson(Map<String, dynamic> json) => DetailPaketModel(
@@ -47,6 +49,7 @@ class DetailPaketModel {
         long: json["long"],
         status: json["status"],
         listBarang: List<ListBarang>.from(json["listBarang"].map((x) => ListBarang.fromJson(x))),
+        bukti:json["foto_bukti_penerima"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -61,6 +64,7 @@ class DetailPaketModel {
         "long": long,
         "status": status,
         "listBarang": List<dynamic>.from(listBarang.map((x) => x.toJson())),
+        "foto_bukti_penerima":bukti,
     };
 }
 

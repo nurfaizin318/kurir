@@ -68,8 +68,7 @@ class Service implements BaseService {
 
   static BaseOptions baseOptions = BaseOptions(
     baseUrl: ApiPaths.baseUrl,
-    connectTimeout: Duration(seconds: 30),
-    receiveTimeout: Duration(seconds: 10),
+  
     validateStatus: (status) {
       return status! < 500;
     },

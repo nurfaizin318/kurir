@@ -39,13 +39,12 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   cupertino_icons: ^1.0.2
-  geocoding: ^2.1.0
   connectivity: ^3.0.6
   shimmer: ^3.0.0
   alice: ^0.3.3
   encrypt: ^5.0.1
   image_picker: ^0.8.3+2
-  
+  permission_handler: ^10.2.0
   
 
 

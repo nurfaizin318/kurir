@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:connectivity/connectivity.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart' hide Response;
@@ -6,19 +9,21 @@ import 'package:kurir/Component/bottom_sheet_error.dart';
 import 'package:kurir/Module/Detail/model.dart';
 import 'package:kurir/Repository/detail_repository.dart';
 import 'package:kurir/Service/dio_service.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class DetailController extends GetxController {
   final service = Service.instance;
   RxBool isLoadDetail = false.obs;
   Rxn<DetailPaketModel> detailPaket = Rxn<DetailPaketModel>();
   late Position position;
+ 
 
   @override
   void onInit() async {
- 
     position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-           getListDetailPaket();
+    getListDetailPaket();
+
     super.onInit();
   }
 
@@ -32,6 +37,7 @@ class DetailController extends GetxController {
         final baseResponse = await DetailRepository.instance
             .getDetail(int.parse(Get.arguments[0]), position);
         DetailPaketModel detail = DetailPaketModel.fromJson(baseResponse.data);
+      
         detailPaket.value = detail;
         isLoadDetail.value = false;
       } catch (error) {
@@ -40,6 +46,10 @@ class DetailController extends GetxController {
         throw Exception('failed fetch list $error');
       }
     }
+  }
+
+  Image imageFromBase64String(String base64String) {
+    return Image.memory(base64Decode(base64String));
   }
 
   void navigateToMaps() {

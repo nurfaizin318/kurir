@@ -9,14 +9,15 @@ class OrderRepositoryImpl {
 
   static final instance = OrderRepositoryImpl._();
 
-  Future sendPackage(String id) async {
+  Future sendPackage(String id, String foto) async {
     var formData = FormData.fromMap({
       'idPemesan': id,
+      'fotoBuktiPenerima':foto
     });
 
     try {
       CancelToken cancelToken = CancelToken();
-      Response response = await service.post(ApiPaths.updatePaket,
+      Response response = await service.withRequestHandler().post(ApiPaths.updatePaket,
           cancelToken: cancelToken,
           data: formData,
           useToken: false,
